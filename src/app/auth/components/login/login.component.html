@@ -1,0 +1,97 @@
+<div class="body d-flex justify-content-center  overflow-hidden pb-3">
+  <div class="global-container">
+    <div class="card-all login-form  shadow pb-3 mb-5 bg-white d-flex">
+      <div
+        class="card-header d-flex align-items-center
+         justify-content-center text-center text-light"
+      >
+        <i class="fa fa-cart-arrow-down" style="font-size: 30px"></i>
+        &nbsp; <span style="font-size: 35px">Store</span>
+      </div>
+      <div class="card-body">
+        <h3
+          class="card-title text-center mt-2"
+          style="font-weight: 550; color: #848181; font-size: 25px"
+        >
+          Sign in
+        </h3>
+        <h3 *ngIf="errorAuthLogin"
+        class="card-title text-center text-danger mt-2"
+        style="font-weight: 550; color: #848181; font-size: 25px"
+      >
+        {{errorAuthLogin}}
+      </h3>
+        <div class="card-text">
+          <form #loginForm="ngForm" (ngSubmit)="(Userlogin())">
+            <div class="form-group p-3">
+              <input
+                type="email"
+                required
+                name="username"
+                ngModel
+                #user="ngModel"
+                [(ngModel)]="email"
+
+                placeholder="Username"
+                class="form-control form-control"
+              />
+              <div *ngIf="user.touched">
+                <p *ngIf="user.errors?.['required']" style="color: red">
+                  Email is a required field!
+                </p>
+                <!-- <p *ngIf="user.errors?.['pattern']" style="color: red">
+                  Enter valid email
+                </p> -->
+              </div>
+            </div>
+            <div class="form-group p-3">
+              <input
+                type="password"
+                name="password"
+                placeholder="password"
+                class="form-control form-control"
+                id="exampleInputPassword1"
+                required
+                [(ngModel)]="password"
+                minlength="8"
+                #p="ngModel"
+                ngModel
+                pattern=".{8,}"
+              />
+              <div *ngIf="p.touched">
+                <p *ngIf="p.errors?.['required']" style="color: red">
+                  Password is a required field!
+                </p>
+                <p *ngIf="p.errors?.['pattern']" style="color: red">
+                  This is not a valid Password !
+                </p>
+              </div>
+              <a href="#" style="float: right; font-size: 14px" class="pt-3"
+                >Forgot password?</a
+              >
+              <br />
+              <input
+                type="checkbox"
+                value="lsRememberMe"
+                id="rememberMe"
+                class="pt-3"
+              />
+
+              <label for="rememberMe" style="font-size: 14px;margin-left: 5px;"
+                > Remember me</label
+              >
+            </div>
+            <div class="text-center">            <button
+              type="submit"
+              class="btn loginB text-light mt-1 btn-lg text-center"
+              routerLink="/dashboard"
+            >
+              Sign in
+            </button></div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<div class="container mb-5">
+    <div class="container py-2 px-3 h-100">
+        <div class="d-flex justify-content-between align-items-center py-3">
+            <h1>Order Detail</h1>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="invoice p-4">
+                    <div class="container h-100 border-bottom">
+                        <div class="d-flex justify-content-between align-items-center py-2">
+                            <h1>Product Summary</h1>
+                            <h4>Order ID: {{orderId}}</h4>
+                        </div>
+                    </div>
+                    <div class="product border-bottom table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">IMAGE</th>
+                                    <th scope="col">PRODUCT</th>
+                                    <th scope="col">PRICE/UNIT</th>
+                                    <th scope="col">QUANTITY</th>
+                                    <th scope="col">SUBTOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let orderDetail of orders ">
+                                    <td>
+                                        <span class="font-weight-bold">#</span>
+                                    </td>
+                                    <td>
+                                        <img src="{{orderDetail.product.images[0].imgPath}}" width="90">
+                                    </td>
+                                    <td>
+                                        <span class="font-weight-bold">{{orderDetail.product.name}}</span>
+                                        <div class="product-qty">
+                                            <span class="d-block">Quantity:{{orderDetail.quantity}}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="font-weight-bold">{{orderDetail.price | currency:'EUR'}}</span>
+                                    </td>
+                                    <td>
+                                        <span class="font-weight-bold">{{orderDetail.quantity}}</span>
+                                    </td>
+                                    <td>
+                                        <div class="text-right">
+                                            <span class="font-weight-bold">{{orderDetail.quantity * orderDetail.price | currency:'EUR' }}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                              
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-md-4">
+                            <table class="table table-borderless">
+                                <tbody class="totals">
+                                    <tr>
+                                        <td>
+                                            <div class="text-left">
+                                                <span class="text-muted">Subtotal</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right">
+                                                <span>{{totalPrice |currency:"ERU"}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="text-left">
+                                                <span class="text-muted">Shipping Fee</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right">
+                                                <span>free Shipping </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-top border-bottom">
+                                        <td>
+                                            <div class="text-left">
+                                                <span class="font-weight-bold">TotalPrice</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-right">
+                                                <span class="font-weight-bold">{{totalPrice |currency:"ERU"}}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container padding-bottom-3x mb-1">
+    <div class="card mb-3">
+        <div class="p-4 text-center text-secondary text-lg rounded-top"><span class="text-uppercase">Tracking Order No -
+            </span><span class="text-medium">{{orders[0].order_id}}</span></div>
+        <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary text-secondary">
+            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Shipped Via:</span> UPS Ground</div>
+            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Status: <span *ngIf="orders[0].order.payment_status==1">confirmed</span>
+                <span *ngIf="orders[0].order.payment_status==2">in progress</span>
+                <span *ngIf="orders[0].order.payment_status==3">out of deliverd</span>
+                <span *ngIf="orders[0].order.payment_status==4">deliverd</span>
+                <span *ngIf="orders[0].order.payment_status==0">not conformed</span>
+            </span></div> 
+            <div class="w-100 text-center py-1 px-2"><span class="text-medium">Expected Date: </span><span>{{ twoDaysAfter | date:'MMM d, y'}}</span></div>
+        </div>
+        <div class="card-body">
+            <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                <div class="step " [class.completed]="orders[0].order.payment_status >= 1">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    </div>
+                    <h4 class="step-title">Confirmed Order</h4>
+                </div>
+                <div class="step completed"  [class.completed]="orders[0].order.payment_status >= 2" >
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fa-solid fa-arrows-spin"></i></div>
+                    </div>
+                    <h4 class="step-title">Processing Order</h4>
+                </div>
+                <div class="step completed"  [class.completed]="orders[0].order.payment_status >= 3">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fa-solid fa-truck"></i></div>
+                    </div>
+                    <h4 class="step-title">On Delivery</h4>
+                </div>
+                <div class="step"  [class.completed]="orders[0].order.payment_status >= 4">
+                    <div class="step-icon-wrap">
+                        <div class="step-icon"><i class="fa-solid fa-people-carry-box"></i></div>
+                    </div>
+                    <h4 class="step-title">Product Delivered</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
